@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int getMinimum(int a, int b, int c){
+int getMinimum(int a, int b, int c) {
     /*
      * Return the smallest values out of three integers.
      */
@@ -13,7 +13,7 @@ int getMinimum(int a, int b, int c){
     return *min_element(dummieArray, dummieArray + 3);
 };
 
-string getString(){
+string getString() {
     /*
      * Ask user for a string. Check if all characters are alphabetical. If not, keep asking the user for an
      * alphabetical string until given.
@@ -27,12 +27,12 @@ string getString(){
     // check if all characters are alphabetical
     for (int i = 0; i < str.length(); i++) {
         c = str.at(i);
-        if (! ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) ) ) {
+        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z' ))) {
             cout << "string has illegal charachters. Please use only alphabetical characters." << endl;
             str = getString();
             break;
-        }
-    }
+        };
+    };
 
     // Ensure strings are lowercase
     transform(str.begin(), str.end(), str.begin(), ::tolower);
@@ -56,27 +56,27 @@ int main() {
     vector <vector<int>> dldMatrix(a.size()+1, vector<int>(b.size()+1));
 
     // first row has incremental values
-    for (int i = 1; i < a.size() + 1; i++){
+    for (int i = 1; i < a.size() + 1; i++) {
         dldMatrix[i][0] = i;
     };
 
     // first column has incremental values
-    for (int i = 1; i < b.size() + 1; i++){
+    for (int i = 1; i < b.size() + 1; i++) {
         dldMatrix[0][i] = i;
     };
 
     // Calculate for each element of dldMatrix[i, j] the Damerau-Levenshtein distance between the first
     // i characters of string a and the first j characters of string b
-    for(int i = 1; i <= a.size(); i++ ){
+    for(int i = 1; i <= a.size(); i++ ) {
         int db = 0;
-        for(int j = 1; j <= b.size(); j++){
+        for(int j = 1; j <= b.size(); j++) {
             int i1 = da[(int)b[j-1] - asciiConst];
             int j1 = db;
             int substitutionCost = 0;
 
             // remember index of last character in b that is also in the first i charachters of a
             // and determine value of substitutionCost
-            if(a[i-1] == b[j-1]){
+            if(a[i-1] == b[j-1]) {
                 db = j;
             } else {
                 substitutionCost = 1;
@@ -89,9 +89,9 @@ int main() {
             dldMatrix[i][j] = getMinimum(substitutionDistance, deletionDistance, insertionDistance);
 
             // if a transposition is possible AND profitable change value to transpositionDistance
-            if(i1 > 0 && j1 > 0){
+            if(i1 > 0 && j1 > 0) {
                 int transpositionDistance = dldMatrix[i1-1][j1-1] + (i-i1-1) + (j-j1-1) + 1;
-                if(dldMatrix[i][j] > transpositionDistance){
+                if(dldMatrix[i][j] > transpositionDistance) {
                     dldMatrix[i][j] = transpositionDistance;
                 };
             };
